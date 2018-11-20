@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <property name="LOG_PATH" value="logs"/>
+    <property name="STD_PATTERN"
+              value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{15}) - %msg %n"/>
+    <property name="STD_PATTERN_STOUT"
+              value="%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{15}) - %msg %n"/>
+    <property name="ROTATE_SUFFIX" value="%d{yyyyMMdd_HH}_%i.gz"/>
+    <property name="MAX_HISTORY" value="720"/>
+    <property name="MAX_FILE_SIZE" value="10MB"/>
+    <property name="TOTAL_SIZE_CAP" value="250MB"/>
+
+    <appender name="common" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/info/info.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archive/info/%d{yyyy-MM-dd}/info.${ROTATE_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STD_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="errors" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/errors/errors.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archive/errors/%d{yyyy-MM-dd}/errors.${ROTATE_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STD_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="warning" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/warning/warning.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archive/warning/%d{yyyy-MM-dd}/warning${ROTATE_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STD_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="metric" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/metric/metrics.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/archive/metric/%d{yyyy-MM-dd}/metric${ROTATE_SUFFIX}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${STD_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.eustimenko.configuration.aop.TimeTrackerAspect" level="INFO">
+        <appender-ref ref="metric"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="common"/>
+        <appender-ref ref="errors"/>
+        <appender-ref ref="warning"/>
+    </root>
+</configuration>
