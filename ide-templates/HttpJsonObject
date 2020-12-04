@@ -1,0 +1,15 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(onConstructor = @__(@JsonCreator))
+@ToString
+@Getter
+public class ${NAME} {
+}
