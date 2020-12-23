@@ -12,16 +12,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-if (project.hasProperty("sigma")) {
-    repositories {
-        maven("http://nexus.sigma.sbrf.ru:8099/nexus/content/groups/public")
-        mavenCentral()
-    }
-} else {
-    repositories {
-        mavenCentral()
-    }
+repositories {
+    mavenCentral()
 }
+
 
 configurations.all {
     exclude(mapOf("group" to "org.springframework.boot", "module" to "spring-boot-starter-logging"))
